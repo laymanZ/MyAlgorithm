@@ -1097,6 +1097,7 @@ public class Summation
 ```Java
 public class Sum 
 {
+	//二进制移位实现加减乘除
 	public static void main(String [] args)
 	{
 		System.out.println(Add(7,3));
