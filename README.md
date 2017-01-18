@@ -1002,8 +1002,55 @@ public class ComplexLinkCopy
 }
 ```
 
-### 26、二叉搜索树与双向链表 
+### 26、二叉搜索树与双向链表
+题目描述：
+输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。
+要求不能创建任何新的结点，只能调整树中结点指针的指向。
+```Java
+思路：熟悉非递归版本的中序遍历
+public class BinarySearchTreeAndBidirectionalLinkedList 
+{
+	public class TreeNode 
+	{
+	    int val = 0;
+	    TreeNode left = null;
+	    TreeNode right = null;
 
+	    public TreeNode(int val) 
+	    {
+	        this.val = val;
+
+	    }
+
+	}
+	
+	TreeNode head = null;
+	TreeNode realhead = null;
+	 public TreeNode Convert(TreeNode pRootOfTree) 
+	 {
+		  ConvertDeal(pRootOfTree);
+	      return realhead;
+	 }
+	private void ConvertDeal(TreeNode pRootOfTree)
+	{
+		if(pRootOfTree == null)
+			return;
+		ConvertDeal(pRootOfTree.left);
+		if(head == null)
+		{
+			head = pRootOfTree;
+			realhead = pRootOfTree;
+		}
+		else
+		{
+			head.right = pRootOfTree;
+			pRootOfTree.left = head;
+			head = pRootOfTree;
+		}
+		ConvertDeal(pRootOfTree.right);
+	}
+}
+```
 ### 27、字符串的排列 
 
 ### 28、数组中出现次数超过一半的数字 
