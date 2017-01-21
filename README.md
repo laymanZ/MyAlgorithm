@@ -1052,6 +1052,54 @@ public class BinarySearchTreeAndBidirectionalLinkedList
 }
 ```
 ### 27、字符串的排列 
+题目描述
+输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。 
+输入描述:
+输入一个字符串,长度不超过9(可能有字符重复),字符只包括大小写字母。
+```Java
+public class Solution 
+{
+    ArrayList<String> arr = new ArrayList<>();
+    public ArrayList<String> Permutation(String str) 
+    {
+       test(str.toCharArray(), 0, str.length()-1);
+		Collections.sort(arr);
+		return arr;
+    }
+    public void test(char [] a,int from,int to)
+	{
+		
+		if(from == to)
+			arr.add(String.valueOf(a));
+			
+		for(int i=from;i<=to;i++)
+		{
+			if(canSwap(a, from, i))
+			{
+				swap(a,i,from);
+				test(a, from+1, to);
+				swap(a,from,i);
+			}
+		}
+	}
+	public boolean canSwap(char [] a,int begin,int end)
+	{
+		for(int i=begin;i<end;i++)
+		{
+			if(a[i] == a[end])
+				return false;
+		}
+		return true;
+	}
+
+	public static void swap(char [] a,int i,int j)
+	{
+		char m = a[i];
+		a[i] = a[j];
+		a[j] = m;
+	}
+}
+```
 
 ### 28、数组中出现次数超过一半的数字 
 
