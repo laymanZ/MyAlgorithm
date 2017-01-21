@@ -1074,7 +1074,7 @@ public class Solution
 			
 		for(int i=from;i<=to;i++)
 		{
-			if(canSwap(a, from, i))
+			if(canSwap(a, from, i))//判断是否有重复字母，有的话不交换			
 			{
 				swap(a,i,from);
 				test(a, from+1, to);
