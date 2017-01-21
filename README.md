@@ -1296,4 +1296,227 @@ public class StringToNum
 
 ### 65、矩阵中的路径
 
+## 66、各种排序
+
+### 冒泡排序
+```Java
+	public void bubbleSort()
+	{
+		int out,in;
+		for(out = nElems-1;out>1;out--)
+		{
+			for(in=0;in<out;in++)
+			{
+				if(a[in]>a[in+1])
+					swap(in,in+1);
+			}
+		}
+	}
+```
+### 交换排序
+```Java
+	public void selectionSort()
+	{
+		int out,in,min;
+		for(out=0;out<nElems-1;out++)
+		{
+			min = out;
+			for(in=out+1;in<nElems;in++)
+				if(a[in] < a[min])
+					min = in;
+				swap(out,min);
+		}
+	}
+```
+### 插入排序
+```Java
+	public void insertionSort()
+	{
+		int in,out;
+		for(out=1;out<nElems;out++)
+		{
+			long temp = a[out];
+			in = out;
+			while(in>0 && a[in-1] >= temp) //这里是大于等于
+			{
+				a[in] = a[in-1];
+				--in;
+			}
+			a[in] = temp;
+		}
+	}
+```
+### 希尔排序：
+```Java
+	public void shellSort()
+	{
+		int inner,outer;
+		long temp;
+		int h = 1;
+		while(h <= nElems/3)
+			h = h*3 + 1;
+		while(h>0)
+		{
+			for(outer = h; outer < nElems;outer++)
+			{
+				temp = theArray[outer];
+				inner = outer;
+				while(outer > h-1 && theArray[inner - h] >=temp)
+				{
+					theArray[inner] = theArray[inner - h];
+					inner -= h;
+				}
+				theArray[inner] = temp;
+			}
+			h = (h-1)/3;
+		}
+	}
+```
+### 归并排序：
+```Java
+	private void recMergeSOrt(long [] workSpace ,int lowerBound,int upperBooud)
+	{
+		if(lowerBound == upperBooud)
+			return;
+		else
+		{
+			 int mid = (lowerBOund+upperBound) /2 ;
+			 recMergeSort(workSpace,lowerBound,mid);
+			 recMergeSort(workSpace,mid+1,upperBound);
+			 merge(workSpace,lowerBound,mid+1,upperBound);
+		}
+	}
+
+	private void merge(long [] workSpace , int lowPtr,int highPtr,int upperBound)
+	{
+		int j = 0;
+		int lowerBound = lowPtr;
+		int mid = highPtr-1;
+		int n = uperBound - lowerBOund + 1;
+
+		while(lowPtr <= mid && highPtr <= upperBound)
+			if(theArray[lowPtr] < theArray[highPtr])
+				workSpace[j++] = theArray[lowPtr++];
+			else
+				workSpace[j++] = theArray[highPtr++];
+
+		while(lowPtr <= mid)
+			workSpace[j++] = theArray[lowPtr++];
+		while(highPtr <= upperBound)
+			workSpace[j++] = theArray[hightPtr++];
+
+		for(j=0;j<n;j++)
+			theArray[lowBound + j] = workSpace[j];
+	}
+ ```
+		
+### 快速排序：
+```Java
+	//注1，有的书上是以中间的数作为基准数的，要实现这个方便非常方便，直接将中间的数和第一个数进行交换就可以了。
+
+	//快速排序  
+	void quick_sort(int s[], int l, int r)  
+	{  
+   	 	if (l < r)  
+    	{  
+        	//Swap(s[l], s[(l + r) / 2]); //将中间的这个数和第一个数交换 参见注1  
+        	int i = l, j = r, x = s[l];  
+        	while (i < j)  
+        	{  
+            	while(i < j && s[j] >= x) // 从右向左找第一个小于x的数  
+                	j--;    
+            	if(i < j)   
+                	s[i++] = s[j];  
+              
+            	while(i < j && s[i] < x) // 从左向右找第一个大于等于x的数  
+                	i++;    
+            	if(i < j)   
+                	s[j--] = s[i];  
+        	}  
+        	s[i] = x;  
+        	quick_sort(s, l, i - 1); // 递归调用   
+        	quick_sort(s, i + 1, r);  
+   	 	}  
+	}  
+```
+### 堆排序：
+```Java
+	public static void main(String [] args)
+	{
+		int [] a = {9,8,5,6,12,4};
+		MakeMinHeap(a,a.length);
+		MinheapsortTodescendarray(a,a.length);
+		for(int i=0;i<a.length;i++)
+			System.out.print(a[i] + " ");
+	}
+	
+	//建立最小堆  
+	static void MakeMinHeap(int a[], int n)  
+	{  
+	    for (int i = n / 2 - 1; i >= 0; i--)  
+	        MinHeapFixDown(a, i, n);  
+	}  
+	
+	static void MinheapsortTodescendarray(int a[], int n)  
+	{  
+	    for (int i = n - 1; i >= 0; i--)  
+	    {  
+	        int temp = a[i];
+	        a[i] = a[0];
+	        a[0] = temp;
+	        MinHeapFixDown(a, 0, i);  
+	    }  
+	}  	
+//  从i节点开始调整,n为节点总数 从0开始计算 i节点的子节点为 左子节点2*i+1, 右子节点2*i+2
+	static void MinHeapFixDown(int [] a,int i,int n)
+	{
+		int temp = a[i];
+		int j = 2*i+1;
+		while(j<n)
+		{
+			if(j+1<n && (a[j+1] < a[j]))
+				j+=1;
+			
+			if(a[j] >= temp)
+				break;
+			
+			a[i] = a[j];
+			i = j;
+			j = 2*i+1;
+		}
+		a[i] = temp;
+	}
+```
+### 遍历
+```Java
+// 中序遍历
+
+1、调用自身来遍历节点的左子树
+2、访问这个节点
+3、调用自身来遍历节点的右子树
+
+	void inOrder(node localRoot)
+	{
+		if(localRoot!=null)
+		{
+			inOrder(localRoot.leftChild);
+			System.out.print(localRoot.iData + " ");
+			inOrder(localRoot.rightChild);
+		}
+	}
+
+	开始时用根作为参数调用这个方法
+	inOrder(root)
+
+// 前序遍历
+1、访问这个节点
+2、调用自身来遍历节点的左子树
+3、调用自身来遍历节点的右子树
+
+
+// 后序遍历
+1、调用自身来遍历节点的左子树
+2、调用自身来遍历节点的右子树
+3、访问这个节点		
+```
 未完待续 continue 。。。
