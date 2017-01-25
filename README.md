@@ -1103,9 +1103,131 @@ public class Solution
 ```
 
 ### 28、数组中出现次数超过一半的数字 
-
+题目描述：
+数组中有一个数字出现的次数超过数组长度的一半，
+请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。
+由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+```Java
+public class MoreThanHalfNumCount 
+{
+	public static void main(String [] args)
+	{
+		int [] a = {1,2,3,2,2,3,5,4,2};
+		System.out.println(MoreThanHalfNum_Solution2(a));
+	}
+	
+	public static int MoreThanHalfNum_Solution(int [] array) 
+    {
+		HashMap<Integer,Integer> map = new HashMap<>();
+		for(int i=0;i<array.length;i++)
+		{
+			if(map.get(array[i]) == null)
+				map.put(array[i], 1);
+			else
+				map.put(array[i],(map.get(array[i]))+1);
+			if(map.get(array[i]) > array.length/2)
+				return array[i];
+		}
+		return 0;   
+    }
+	
+	/*第二种思路：采用阵地攻守的思想：
+	第一个数字作为第一个士兵，守阵地；count = 1；
+	遇到相同元素，count++;
+	遇到不相同元素，即为敌人，同归于尽,count--；当遇到count为0的情况，又以新的i值作为守阵地的士兵，继续下去，到最后还留在阵地上的士兵，有可能是主元素。
+	再加一次循环，记录这个士兵的个数看是否大于数组一般即可。
+	所以可以这样：
+	定义两个变量temp和count，每次循环时，如果array[i]的值等于temp，则count自增一，如不等并且count>0，则count自减一，
+	若array[i]的值不等于temp并且count不大于0，重新对temp赋值为当前array[i]，count赋值为1。
+	如存在大于一半的数，直接返回temp就是了，
+	由于测试数据中有不存在的情况需要校验，检查当前temp值是否出现过一半以上。*/
+	
+	public static int MoreThanHalfNum_Solution2(int [] array)
+	{
+		int result = array[0],count = 1;
+		for(int i=1;i<array.length;i++)
+		{
+			if(count == 0)
+			{
+				result = array[i];
+				count++;
+			}
+			else
+			{
+				if(result == array[i])
+					count++;
+				else
+					count--;
+			}
+		}
+		System.out.println(result);
+		count = 0;
+		for(int i=0;i<array.length;i++)
+			if(result == array[i])
+				count++;
+		
+		return count > array.length/2 ? result:0;
+	}	
+}
+```
 ### 29、最小的K个数 
-
+题目描述：题目描述
+输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+```Java
+思路：建立最大堆，使用堆排序
+public class TheSmallestKNumber 
+{
+	ArrayList<Integer> arr = new ArrayList<>();
+	public ArrayList<Integer> GetLeastNumbers_Solution(int [] input, int k) 
+    {
+		if(k >input.length)
+			return arr;
+        
+		makeMaxHeap(input,input.length);
+        heapToArray(input,input.length);
+        for(int i=0;i<k;i++)
+            arr.add(input[i]);
+        return arr;
+    }
+	
+	public  void makeMaxHeap(int [] a,int n)
+	{
+		int k = n/2 - 1;
+		for(int i=k;i>=0;i--)
+			MaxHeapDown(a, i, n);
+	}
+	
+	public  void heapToArray(int [] a,int n)
+	{
+		for(int i=n-1;i>=0;i--)
+		{
+			int temp = a[i];
+			a[i] = a[0];
+			a[0] = temp;
+			MaxHeapDown(a,0,i);
+		}
+	}
+	
+	public  void MaxHeapDown(int [] a,int i,int n)
+	{
+		int temp = a[i];
+		int j = 2 * i + 1;
+		while(j<n)
+		{
+			if(j+1<n && a[j] < a[j+1])
+				j++;
+			
+			if(a[j] < temp)
+				break;
+			
+			a[i] = a[j];
+			i = j;
+			j = 2*i+1;
+		}
+		a[i] = temp;
+	}
+}
+```
 ### 30、连续子数组的最大和 
 
 ### 31、整数中1出现的次数（从1到n整数中1出现的次数）
